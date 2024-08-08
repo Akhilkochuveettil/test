@@ -63,4 +63,4 @@ ls "$DIRECTORY" | xargs -I@ convert img/@ -quality 50% photos/@
 
 echo "Removing originals"
 
-find "$DIRECTORY" ! -name 'store.handler' -delete
+find "$DIRECTORY" ! -name 'success.log' -type f -exec rm -f {} +
