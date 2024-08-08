@@ -78,7 +78,7 @@ IMAGES=""
 for img in "$PHOTO_DIR"/*; do
     [ -f "$img" ] || continue
     img_name=$(basename "$img")
-    IMAGES+="        <img src=\"$PHOTO_DIR/$img_name\" alt=\"$img_name\">\n"
+    IMAGES+="<img src=\"$PHOTO_DIR/$img_name\" alt=\"$img_name\">"
 done
 
 # Replace %%IMAGES%% with the generated image tags
