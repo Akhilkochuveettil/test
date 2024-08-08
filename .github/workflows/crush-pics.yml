@@ -12,11 +12,21 @@ jobs:
     steps:
     - name: Check out the repository
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Fetch all history so we can create new branches if needed
 
     - name: Set up Git
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
+
+    - name: Ensure dev branch exists
+      run: |
+        if git rev-parse --verify dev; then
+          git checkout dev
+        else
+          git checkout -b dev
+        fi
 
     - name: Make flow.sh executable
       run: chmod +x ./flow.sh
@@ -26,12 +36,8 @@ jobs:
 
     - name: Commit and Push Changes
       run: |
-        ls -alh
-        ls -alh photos/
-        git checkout dev
         git add .
         git commit -m "Automated changes by GitHub Actions"
         git push origin dev
       env:
-        # Set GITHUB_TOKEN to automatically authenticate the push
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
