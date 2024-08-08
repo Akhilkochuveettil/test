@@ -31,6 +31,10 @@ jobs:
           git checkout -b dev
         fi
 
+    - name: Pull latest changes from dev branch
+      run: |
+        git pull origin dev --rebase
+
     - name: Make flow.sh executable
       run: chmod +x ./flow.sh
 
