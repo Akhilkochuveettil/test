@@ -37,21 +37,7 @@ jobs:
     - name: Pull latest changes from dev branch
       run: |
         git pull origin dev --rebase
-
-    - name: Make flow.sh executable
-      run: chmod +x ./flow.sh
-
-    - name: Run flow.sh
-      run: ./flow.sh
-
-    - name: Commit and Push Changes
-      run: |
-        git add .
-        git commit -m "Automated changes by GitHub Actions" || echo "No changes to commit"
-        git push origin dev
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+    
     - name: Check if dev is behind main
       id: check_behind
       run: |
@@ -66,6 +52,20 @@ jobs:
         git checkout dev
         git fetch origin main
         git merge origin/main --strategy-option theirs -m "Merge changes from main into dev"
+        git push origin dev
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Make flow.sh executable
+      run: chmod +x ./flow.sh
+
+    - name: Run flow.sh
+      run: ./flow.sh
+
+    - name: Commit and Push Changes
+      run: |
+        git add .
+        git commit -m "Automated changes by GitHub Actions" || echo "No changes to commit"
         git push origin dev
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
