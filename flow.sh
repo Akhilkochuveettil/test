@@ -64,6 +64,10 @@ echo "Removing originals"
 
 ls "$DIRECTORY" | grep -v 'store.handler' | xargs -I@ rm -f img/@
 
+ls "$DIRECTORY"
+
+ls "$DIRECTORY" | grep -v 'store.handler'
+
 # Define the directory and files
 PHOTO_DIR="photos"
 HTML_FILE="index.html"
