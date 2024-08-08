@@ -64,7 +64,8 @@ jobs:
       if: steps.check_behind.outputs.behind != '0'
       run: |
         git checkout dev
-        git merge origin/main --no-ff -m "Merge changes from main into dev"
+        git fetch origin main
+        git merge origin/main --strategy-option theirs -m "Merge changes from main into dev"
         git push origin dev
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
