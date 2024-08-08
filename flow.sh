@@ -62,4 +62,5 @@ find "$DIRECTORY" -type f
 ls "$DIRECTORY" | xargs -I@ convert img/@ -quality 50% photos/@
 
 echo "Removing originals"
-rm -rf img/
+
+find "$DIRECTORY" ! -name 'store.handler' -delete
