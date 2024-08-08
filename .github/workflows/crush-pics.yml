@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'main'  # Trigger only on push to main branch
+    paths:
+      - 'img/**'
 
 permissions:
   contents: write  # Explicitly set the permission to allow pushing to the repository
