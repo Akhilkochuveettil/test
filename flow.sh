@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # Function to check if ImageMagick is installed
 check_imagemagick() {
     if command -v convert > /dev/null 2>&1; then
@@ -62,3 +60,6 @@ find "$DIRECTORY" -type f
 # find "$DIRECTORY" -type f | sort
 
 ls "$DIRECTORY" | xargs -I@ convert img/@ -quality 50% photos/@
+
+echo "Removing originals"
+rm -rf img/

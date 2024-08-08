@@ -3,13 +3,14 @@ name: Run flow.sh and Push Changes to Dev
 on:
   push:
     branches:
-      - 'main'  # Trigger on push to any branch
+      - 'main'  # Trigger only on push to main branch
 
 permissions:
   contents: write  # Explicitly set the permission to allow pushing to the repository
 
 jobs:
   run-and-push:
+    if: github.actor != 'actions-user'  # Only run if the last commit author is not 'actions-user'
     runs-on: ubuntu-latest
 
     steps:
@@ -46,5 +47,14 @@ jobs:
         git add .
         git commit -m "Automated changes by GitHub Actions"
         git push origin dev
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Merge Dev into Main
+      run: |
+        git checkout main
+        git pull origin main --rebase
+        git merge dev --no-ff -m "Merge changes from dev into main"
+        git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
