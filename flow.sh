@@ -58,9 +58,8 @@ find "$DIRECTORY" -type f
 # Optionally, you can also filter or sort the files
 # For example, to list files sorted by name:
 # find "$DIRECTORY" -type f | sort
-
-ls "$DIRECTORY" | xargs -I@ convert img/@ -quality 50% photos/@
+ls "$DIRECTORY" | grep -v 'store.handler' | xargs -I@ convert img/@ -quality 50% photos/@
 
 echo "Removing originals"
 
-find "$DIRECTORY" ! -name 'success.log' -type f -exec rm -f {} +
+ls "$DIRECTORY" | grep -v 'store.handler' | xargs -I@ rm -f img/@
