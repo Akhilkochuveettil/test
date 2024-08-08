@@ -63,3 +63,29 @@ ls "$DIRECTORY" | grep -v 'store.handler' | xargs -I@ convert img/@ -quality 50%
 echo "Removing originals"
 
 ls "$DIRECTORY" | grep -v 'store.handler' | xargs -I@ rm -f img/@
+
+# Define the directory and files
+PHOTO_DIR="photos"
+HTML_FILE="index.html"
+TEMP_FILE="temp.html"
+
+
+# Create a temporary file to hold the updated content
+cp "${HTML_FILE}.bak" "$TEMP_FILE"
+
+# Generate image tags
+IMAGES=""
+for img in "$PHOTO_DIR"/*; do
+    [ -f "$img" ] || continue
+    img_name=$(basename "$img")
+    IMAGES+="        <img src=\"$PHOTO_DIR/$img_name\" alt=\"$img_name\">\n"
+done
+
+# Replace %%IMAGES%% with the generated image tags
+sed -i "/%%IMAGES%%/r /dev/stdin" "$TEMP_FILE" <<< "$IMAGES"
+cp "$TEMP_FILE" "$HTML_FILE".bak
+
+sed -i "s/%%IMAGES%%//g" "$TEMP_FILE"
+
+# Replace the original HTML file with the updated one
+mv "$TEMP_FILE" "$HTML_FILE"
