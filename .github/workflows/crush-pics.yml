@@ -5,6 +5,9 @@ on:
     branches:
       - 'main'  # Trigger on push to any branch
 
+permissions:
+  contents: write  # Explicitly set the permission to allow pushing to the repository
+
 jobs:
   run-and-push:
     runs-on: ubuntu-latest
