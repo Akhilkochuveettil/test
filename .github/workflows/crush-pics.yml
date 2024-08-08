@@ -47,7 +47,24 @@ jobs:
     - name: Commit and Push Changes
       run: |
         git add .
-        git commit -m "Automated changes by GitHub Actions"
+        git commit -m "Automated changes by GitHub Actions" || echo "No changes to commit"
+        git push origin dev
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Check if dev is behind main
+      id: check_behind
+      run: |
+        git fetch origin main
+        behind=$(git rev-list --count HEAD..origin/main)
+        echo "Behind by $behind commits"
+        echo "::set-output name=behind::$behind"
+
+    - name: Pull changes from main into dev if behind
+      if: steps.check_behind.outputs.behind != '0'
+      run: |
+        git checkout dev
+        git merge origin/main --no-ff -m "Merge changes from main into dev"
         git push origin dev
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
