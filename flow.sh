@@ -35,7 +35,7 @@ install_imagemagick() {
 if ! check_imagemagick; then
     # Install ImageMagick if not installed
     echo 'installing...'
-    # install_imagemagick
+    install_imagemagick
 fi
 
 
@@ -61,4 +61,4 @@ find "$DIRECTORY" -type f
 # For example, to list files sorted by name:
 # find "$DIRECTORY" -type f | sort
 
-ls "$DIRECTORY" | xargs -I@ echo 'convert img/@ -quality 50% photos/@'
+ls "$DIRECTORY" | xargs -I@ convert img/@ -quality 50% photos/@

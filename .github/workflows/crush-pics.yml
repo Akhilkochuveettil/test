@@ -26,6 +26,7 @@ jobs:
 
     - name: Commit and Push Changes
       run: |
+        git fetch --all 
         git checkout dev
         git add .
         git commit -m "Automated changes by GitHub Actions"
