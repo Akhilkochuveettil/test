@@ -1,21 +1,35 @@
-name: Crush images
+name: Run flow.sh and Push Changes to Dev
+
 on:
   push:
     branches:
-      - main
-    paths:
-      - '**.jpg'
-      - '**.jpeg'
-      - '**.png'
-      - '**.gif'
+      - 'main'  # Trigger on push to any branch
+
 jobs:
-  crush:
+  run-and-push:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Crush images
-        uses: crush-pics/crush-pics-github-action@master
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          api-key: ${{ secrets.CRUSH_API_KEY }}
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+
+    - name: Make flow.sh executable
+      run: chmod +x ./flow.sh
+
+    - name: Run flow.sh
+      run: ./flow.sh
+
+    - name: Commit and Push Changes
+      run: |
+        git checkout dev
+        git add .
+        git commit -m "Automated changes by GitHub Actions"
+        git push origin dev
+      env:
+        # Set GITHUB_TOKEN to automatically authenticate the push
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

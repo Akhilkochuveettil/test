@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#!/bin/bash
+
+# Function to check if ImageMagick is installed
+check_imagemagick() {
+    if command -v convert > /dev/null 2>&1; then
+        echo "ImageMagick is already installed."
+        return 0
+    else
+        echo "ImageMagick is not installed."
+        return 1
+    fi
+}
+
+# Function to install ImageMagick
+install_imagemagick() {
+    echo "Installing ImageMagick..."
+    # Update package lists
+    sudo apt-get update
+
+    # Install ImageMagick
+    sudo apt-get install -y imagemagick
+
+    # Verify installation
+    if command -v convert > /dev/null 2>&1; then
+        echo "ImageMagick installation successful."
+    else
+        echo "ImageMagick installation failed."
+        exit 1
+    fi
+}
+
+# Check if ImageMagick is installed
+if ! check_imagemagick; then
+    # Install ImageMagick if not installed
+    echo 'installing...'
+    # install_imagemagick
+fi
+
+
+# Directory to list files from
+DIRECTORY="img"
+
+# Check if a directory is provided as an argument
+if [ "$1" ]; then
+  DIRECTORY="$1"
+fi
+
+# Check if the directory exists
+if [ ! -d "$DIRECTORY" ]; then
+  echo "Directory $DIRECTORY does not exist."
+  exit 1
+fi
+
+# List all files in the directory
+echo "Files in directory $DIRECTORY:"
+find "$DIRECTORY" -type f
+
+# Optionally, you can also filter or sort the files
+# For example, to list files sorted by name:
+# find "$DIRECTORY" -type f | sort
+
+ls "$DIRECTORY" | xargs -I@ echo 'convert img/@ -quality 50% photos/@'
